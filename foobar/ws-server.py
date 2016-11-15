@@ -14,7 +14,7 @@ async def connection_handler(websocket, path):
     await websocket.send(cbor.dumps(message_json))
 
 
-start_server = websockets.serve(connection_handler, 'localhost', 31337)
+start_server = websockets.serve(connection_handler, 'localhost', 31337, extra_headers= {"Sec-WebSocket-Protocol": "wpcp"})
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
