@@ -11,7 +11,8 @@ async def connection_handler(websocket, path):
     message_json = cbor.loads(message_cbor)
     print("message_json  < {}!".format(message_json))
 
-    await websocket.send(cbor.dumps(message_json))
+    response = [0, 0, { "methods": ["browse"] }]
+    await websocket.send(cbor.dumps(response))
 
 
 start_server = websockets.serve(connection_handler, 'localhost', 31337, extra_headers= {"Sec-WebSocket-Protocol": "wpcp"})
