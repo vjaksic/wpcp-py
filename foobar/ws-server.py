@@ -2,17 +2,19 @@
 
 import asyncio
 import websockets
+import cbor
 
-@asyncio.coroutine
-def hello(websocket, path):
-    name = yield from websocket.recv()
-    print("< {}".format(name))
+async def connection_handler(websocket, path):
+    message_cbor = await websocket.recv()
+    print("message_cbor < {}".format(message_cbor))
 
-    greeting = "Hello {}!".format(name)
-    yield from websocket.send(greeting)
-    print("> {}".format(greeting))
+    message_json = cbor.loads(message_cbor)
+    print("message_json  < {}!".format(message_json))
 
-start_server = websockets.serve(hello, 'localhost', 8765)
+    await websocket.send(cbor.dumps(message_json))
+
+
+start_server = websockets.serve(connection_handler, 'localhost', 31337)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
