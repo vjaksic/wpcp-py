@@ -11,7 +11,7 @@ async def connection_handler(websocket, path):
     message_json = cbor.loads(message_cbor)
     print("message_json  < {}!".format(message_json))
 
-    response = [0, 0, { "methods": ["browse"] }]
+    response = [0, 0, { "methods": ["browse", "browse"] }]
     await websocket.send(cbor.dumps(response))
 
 
